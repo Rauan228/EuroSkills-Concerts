@@ -43,11 +43,11 @@ const booking = async () => {
     <div class="col-md-3 seating justify-content-center me-3">
       <p class="text-center mt-3 fs-4">Selected seats</p>
       <div class="bookedSeats" style="margin-top: 70px;">
-        <div class="text-center">Row: Stall 03, Seat: 6</div>
-        <div class="text-center">Row: Stall 03, Seat: 7</div>
+        <div class="text-center"
+             v-for="place in storedSeating.selectedSeats"
+             :key="`${place.row}` + place.seat">Row: {{ storedSeating.rows.find((items) => items.id == place.row).name }}, Seat: {{ place.seat }}</div>
       </div>
-      <p class="text-center" style="margin-top: 70px">Your seats expire in 02:35</p>
-      <div class=" d-flex justify-content-center mb-4" style="margin-top: 80px;">
+      <p class="text-center" style="margin-top: 70px">Your seats expire in 02:35</p><div class=" d-flex justify-content-center mb-4" style="margin-top: 80px;">
         <button class="btn" @click="$router.push('/seating/'+storedSeating.selectedShow.id)">Change details</button>
       </div>
     </div>
@@ -57,7 +57,7 @@ const booking = async () => {
         <div class="col-12 mb-3">
           <div class="row">
             <div class="col-6">
-              <form class="px-3" action="">
+              <form @submit.prevent="booking" class="px-3" action="">
                 <label for="name" class="pb-2">Name</label>
                 <input v-model="name" class="form-control" type="text" id="name">
                 <label for="name" class="py-2">Address</label>

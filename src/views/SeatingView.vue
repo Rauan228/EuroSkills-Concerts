@@ -6,9 +6,6 @@ import {useRoute} from "vue-router";
 const route = useRoute();
 const storedSeating = useSeatingStore();
 
-storedSeating.setSelectedShow(route.params.id);
-storedSeating.fetchSeating();
-
 async function initSeating() {
   if(!storedSeating.selectedShow) {
     storedSeating.setSelectedShow(route.params.id);

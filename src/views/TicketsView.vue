@@ -1,5 +1,8 @@
 <script setup>
+import {useTicketsStore} from "@/stores/useTicketsStore.js";
 
+const storedTickets = useTicketsStore();
+const { cancelTickets } = storedTickets;
 </script>
 
 <template>
@@ -15,8 +18,8 @@
             <div class="col">Booked On</div>
           </div>
           <div class="row display-flex mb-3">
-            <div class="col">xxxx xxxx</div>
-            <div class="col">dd/mm/yyyy</div>
+            <div class="col">{{ storedTickets.tickets[0]?.name || 'Not found' }}</div>
+            <div class="col">{{ new Date(storedTickets.tickets[0]?.created_at).toLocaleDateString() }}</div>
           </div>
         </div>
       </div>
@@ -24,27 +27,27 @@
   </div>
   <!--  Tickets-->
   <div class="row display-flex justify-content-center mt-4 mb-5">
-    <div class="card col-md-3 text-center m-2">
+    <div v-for="ticket in storedTickets.tickets" :key="ticket.id" class="card col-md-3 text-center m-2">
       <div class="card-body">
         <p class="card-title text-center mb-4 fs-4">Ticket</p>
         <div class="ticket-seats mb-3">
-          <div class="card-text">Row: 1</div>
-          <div class="card-text">Seat: 14</div>
+          <div class="card-text">Row: {{ ticket.row.name }}</div>
+          <div class="card-text">Seat: {{ ticket.seat }}</div>
         </div>
         <div class="card mb-3">
           <div class="card-body text-center d-flex justify-content-center align-items-center">
-            <p class="card-text">Code: <span class="fw-bold">OHCZ3FADYE</span></p>
+            <p class="card-text">Code: <span class="fw-bold">{{ ticket.code }}</span></p>
           </div>
         </div>
         <div class="card mb-3">
           <div class="card-body text-center">
-            <p class="card-text">Date</p>
-            <h5 class="card-title fw-semibold fs-3">Artist</h5>
-            <p class="card-text">Location</p>
-            <p class="card-text mt-5">Start - End</p>
+            <p class="card-text">{{ new Date(ticket.show.start).toLocaleDateString() }}</p>
+            <h5 class="card-title fw-semibold fs-3">{{ ticket.show.concert.artist }}</h5>
+            <p class="card-text">{{ ticket.show.concert.location.name }}</p>
+            <p class="card-text mt-5">{{ new Date(ticket.show.start).toLocaleTimeString() }} - {{ new Date(ticket.show.end).toLocaleTimeString() }}</p>
           </div>
         </div>
-        <button class="btn">Cancel Ticket</button>
+        <button class="btn" @click="cancelTickets(ticket.id, ticket.code, ticket.name)">Cancel Ticket</button>
       </div>
     </div>
   </div>
